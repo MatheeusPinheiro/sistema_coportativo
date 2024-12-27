@@ -1,2 +1,2 @@
-# Sistema Coporativo desenvolvido com Django.
+# Sistema Corporativo desenvolvido com Django.
 
