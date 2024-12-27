@@ -46,10 +46,13 @@ DEBUG = os.getenv('DEBUG')
 
 ALLOWED_HOSTS = ['localhost','127.0.0.1',]
 
+AUTH_USER_MODEL = 'contas.MyUser'
+
 
 # Application definition
 
 DJANGO_APPS  = [
+	'apps.contas',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -63,8 +66,8 @@ THIRD_APPS = [ # são as Lib/app que instalamos no projeto
 ]
 
 PROJECT_APPS = [ # são os apps que criamos no projeto 
-        'apps.base',		# update 11/03/2024
-        'apps.pages',   # Removido esses apps que nao criamos ainda.
+        'apps.base',		
+        'apps.pages',  
 ]
 
 # INSTALLED_APPS é a variavel que django entende para fazer a leitura \
@@ -75,6 +78,7 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_APPS + PROJECT_APPS
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django_session_timeout.middleware.SessionTimeoutMiddleware', # TIMEOUT
     'corsheaders.middleware.CorsMiddleware', # CORS
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -168,6 +172,17 @@ REQUESTLOGS = {
     'METHODS': ('PUT', 'PATCH', 'POST', 'DELETE'),
 }
 
+# timeout tempo de inatividate no sistema
+# SESSION_EXPIRE_SECONDS = 10 
+# SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
+# #SESSION_EXPIRE_AFTER_LAST_ACTIVITY_GRACE_PERIOD = 60  
+# SESSION_TIMEOUT_REDIRECT = 'http://localhost:8000/contas/desconectado-inatividade/'
+
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
