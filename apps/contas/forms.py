@@ -66,3 +66,6 @@ class UserChangeForm(forms.ModelForm):
                 field.widget.attrs['class'] = 'form-check-input'
             else:
                 field.widget.attrs['class'] = 'form-control'
+
+
+                

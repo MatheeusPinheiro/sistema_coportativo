@@ -1,5 +1,5 @@
 from django.db import models
-
+import re
 # Create your models here.
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
@@ -20,6 +20,7 @@ class MyUserManager(BaseUserManager):
     
 
 class MyUser(AbstractBaseUser, PermissionsMixin):
+    username = models.CharField(max_length=100,unique=True,null=True) # Adiciona 
     email = models.EmailField(unique=True, max_length=255)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
@@ -40,3 +41,9 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
 
     def get_short_name(self):
         return self.first_name 
+    
+    def save(self, *args, **kwargs): # Adiciona 
+        get_email = self.email.split("@")[0]
+        email = re.sub(r"[^a-zA-Z0-9]","",get_email)
+        self.username = email
+        super(MyUser, self).save(*args, **kwargs)

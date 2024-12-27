@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import Group, User 
 from apps.contas.forms import CustomUserCreationForm
 from django.shortcuts import get_object_or_404
+from perfil.models import Perfil
 from contas.models import MyUser
 from contas.forms import UserChangeForm
 from django.contrib.auth.decorators import login_required
@@ -43,6 +44,8 @@ def register_view(request):
             group = Group.objects.get(name='usuario')
             usuario.groups.add(group)
 
+            Perfil.objects.create(usuario=usuario) # Cria instancia perfil do usuário
+
             messages.success(request, 'Registrado. Agora faça o login para começar!')
             return redirect('login') # Redireciona para login
         else:
@@ -73,11 +76,13 @@ def atualizar_meu_usuario(request):
         form = UserChangeForm(instance=request.user, user=request.user)
     return render(request, 'user_update.html', {'form': form})
 
+
+
 # Atualizar usuário passa um parametro ID de qualquer usuario
 @login_required()
 @grupo_colaborador_required(['administrador','colaborador'])
-def atualizar_usuario(request, user_id):
-    user = get_object_or_404(MyUser, pk=user_id)
+def atualizar_usuario(request, username):
+    user = get_object_or_404(MyUser, username=username)
     if request.method == 'POST':
         form = UserChangeForm(request.POST, instance=user, user=request.user)
         if form.is_valid():

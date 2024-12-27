@@ -20,6 +20,7 @@ from django.conf.urls.static import static
 from django.urls import path,include
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('perfil/', include('perfil.urls')), # url do app 
     path('', include('pages.urls')), # url do app 
     path('contas/', include('contas.urls')), # Adicionar contas
 ]
